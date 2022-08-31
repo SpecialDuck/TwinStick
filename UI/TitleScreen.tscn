@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://UI/CRT_Effect.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/Themes/panel.tres" type="Theme" id=2]
+[ext_resource path="res://UI/Themes/title_text.tres" type="Theme" id=3]
+[ext_resource path="res://UI/Settings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/TitleScreen.gd" type="Script" id=5]
+[ext_resource path="res://UI/Themes/buttons.tres" type="Theme" id=6]
+[ext_resource path="res://UI/HowToPlay.tscn" type="PackedScene" id=7]
+
+[node name="TitleScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -58.0
+margin_right = 140.0
+margin_bottom = 58.0
+
+[node name="Label" type="Label" parent="VSplitContainer"]
+margin_right = 280.0
+margin_bottom = 28.0
+theme = ExtResource( 3 )
+text = "TWIN STICK"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer"]
+margin_top = 40.0
+margin_right = 280.0
+margin_bottom = 116.0
+
+[node name="ButtonNewGame" type="Button" parent="VSplitContainer/VBoxContainer"]
+margin_right = 280.0
+margin_bottom = 16.0
+theme = ExtResource( 6 )
+text = "New Game"
+
+[node name="ButtonInstructions" type="Button" parent="VSplitContainer/VBoxContainer"]
+margin_top = 20.0
+margin_right = 280.0
+margin_bottom = 36.0
+theme = ExtResource( 6 )
+text = "How to Play"
+
+[node name="ButtonSettings" type="Button" parent="VSplitContainer/VBoxContainer"]
+margin_top = 40.0
+margin_right = 280.0
+margin_bottom = 56.0
+theme = ExtResource( 6 )
+text = "Settings"
+
+[node name="ButtonQuit" type="Button" parent="VSplitContainer/VBoxContainer"]
+margin_top = 60.0
+margin_right = 280.0
+margin_bottom = 76.0
+theme = ExtResource( 6 )
+text = "Quit"
+
+[node name="Settings" parent="." instance=ExtResource( 4 )]
+
+[node name="HowToPlay" parent="." instance=ExtResource( 7 )]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" parent="CanvasLayer" instance=ExtResource( 1 )]
+mouse_filter = 2
+
+[connection signal="pressed" from="VSplitContainer/VBoxContainer/ButtonNewGame" to="." method="_on_ButtonNewGame_pressed"]
+[connection signal="pressed" from="VSplitContainer/VBoxContainer/ButtonInstructions" to="." method="_on_ButtonInstructions_pressed"]
+[connection signal="pressed" from="VSplitContainer/VBoxContainer/ButtonSettings" to="." method="_on_ButtonSettings_pressed"]
+[connection signal="pressed" from="VSplitContainer/VBoxContainer/ButtonQuit" to="." method="_on_ButtonQuit_pressed"]

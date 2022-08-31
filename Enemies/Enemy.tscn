@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://SFX/enemyshoot.ogg" type="AudioStream" id=2]
+
+[node name="Enemy" type="KinematicBody2D" groups=["enemies"]]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource( 1 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+bus = "SFX"
+
+[node name="ShootWaitTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+__meta__ = {
+"_editor_description_": "Used to delay start of enemies firing projectiles at player after spawning. "
+}
+
+[connection signal="timeout" from="ShootWaitTimer" to="." method="_on_ShootWaitTimer_timeout"]

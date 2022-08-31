@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://GameController.gd" type="Script" id=3]
+[ext_resource path="res://UI/GameOver.tscn" type="PackedScene" id=4]
+[ext_resource path="res://UI/Settings.tscn" type="PackedScene" id=5]
+[ext_resource path="res://UI/CRT_Effect.tscn" type="PackedScene" id=6]
+[ext_resource path="res://UI/Themes/overlay_labels.tres" type="Theme" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5, 306 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 505.5, 5 )
+
+[sub_resource type="Curve2D" id=3]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -25, -34, 0, 0, 0, 0, 1043, -32, 0, 0, 0, 0, 1041, 622, 0, 0, 0, 0, -24, 621, 0, 0, 0, 0, -26, -34, 0, 0, 0, 0, -25, -34 )
+}
+
+[node name="Arena" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="GameOver" parent="." instance=ExtResource( 4 )]
+
+[node name="Settings" parent="." instance=ExtResource( 5 )]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 492, 319 )
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+margin_right = 1024.0
+margin_bottom = 597.0
+color = Color( 0.662745, 0.662745, 0.662745, 1 )
+
+[node name="Boundaries" type="Node" parent="."]
+
+[node name="LBoundary" type="StaticBody2D" parent="Boundaries"]
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/LBoundary"]
+margin_right = 10.0
+margin_bottom = 602.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/LBoundary"]
+position = Vector2( 5, 296 )
+shape = SubResource( 1 )
+
+[node name="RBoundary" type="StaticBody2D" parent="Boundaries"]
+position = Vector2( 1014, 0 )
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/RBoundary"]
+margin_right = 10.0
+margin_bottom = 602.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/RBoundary"]
+position = Vector2( 5, 296 )
+shape = SubResource( 1 )
+
+[node name="UBoundary" type="StaticBody2D" parent="Boundaries"]
+position = Vector2( 481, 0 )
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/UBoundary"]
+margin_left = -474.0
+margin_right = 536.0
+margin_bottom = 10.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/UBoundary"]
+position = Vector2( 30.5, 5 )
+shape = SubResource( 2 )
+
+[node name="DBoundary" type="StaticBody2D" parent="Boundaries"]
+position = Vector2( 481, 587 )
+
+[node name="ColorRect" type="ColorRect" parent="Boundaries/DBoundary"]
+margin_left = -475.0
+margin_right = 535.0
+margin_bottom = 10.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries/DBoundary"]
+position = Vector2( 30, 5 )
+shape = SubResource( 2 )
+
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+__meta__ = {
+"_editor_description_": "Controls time between player dying and becoming active again."
+}
+
+[node name="EnemyPath" type="Path2D" parent="."]
+curve = SubResource( 3 )
+
+[node name="EnemySpawnLocation" type="PathFollow2D" parent="EnemyPath"]
+position = Vector2( -25, -34 )
+rotation = 0.00187114
+
+[node name="EnemySpawnTimer" type="Timer" parent="."]
+pause_mode = 1
+autostart = true
+__meta__ = {
+"_editor_description_": "Controls how frequently enemies spawn into the arena."
+}
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+
+[node name="Score" type="RichTextLabel" parent="Overlay"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 183.0
+margin_bottom = 40.0
+theme = ExtResource( 7 )
+text = "Score: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Lives" type="RichTextLabel" parent="Overlay"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -160.0
+margin_top = 12.0
+margin_bottom = 40.0
+theme = ExtResource( 7 )
+text = "Lives: 0
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" parent="Overlay" instance=ExtResource( 6 )]
+
+[connection signal="new_game" from="GameOver" to="." method="_on_GameOver_new_game"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_RespawnTimer_timeout"]
+[connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_EnemySpawnTimer_timeout"]

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Enemies/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Enemies/trishooter.png" type="Texture" id=2]
+[ext_resource path="res://Enemies/Trishooter.gd" type="Script" id=3]
+
+[node name="Trishooter" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="1"]
+polygon = PoolVector2Array( 0, -14, 14, 12, -14, 12 )
+
+[node name="Sprite" type="Sprite" parent="." index="2"]
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 2 )
+
+[node name="FireTimer" type="Timer" parent="." index="3"]
+autostart = true
+
+[connection signal="timeout" from="FireTimer" to="." method="_on_FireTimer_timeout"]
